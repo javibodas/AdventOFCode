@@ -3,7 +3,6 @@ import time
 from copy import deepcopy
 
 _NUM_RATES_CHARGERS = 0
-_POSSIBLE_LESS_INPUT_JOLTAGE = [1 ,2 ,3]
 _DEFAULT_OUTPUT_JOLTAGE_ADAPTER = 0
 _RATE_JOLTAGE_BUILTIN_ADAPTER = 0
 rateOutputJoltageAdapters = []
@@ -12,10 +11,8 @@ rateOutputJoltageAdapters = []
 # FIRST EXERCISE
 def getJoltDifferences():
 
-    oneJoltageDifference = 0
-    threeJoltageDifference = 0
+    oneJoltageDifference, threeJoltageDifference, currentPosAdapters = 0, 0, 0
     currentOutputJoltageAdapter = _DEFAULT_OUTPUT_JOLTAGE_ADAPTER
-    currentPosAdapters = 0
 
     while currentOutputJoltageAdapter < _RATE_JOLTAGE_BUILTIN_ADAPTER:
         if rateOutputJoltageAdapters[currentPosAdapters] == currentOutputJoltageAdapter + 1:
@@ -30,63 +27,30 @@ def getJoltDifferences():
     return oneJoltageDifference * threeJoltageDifference
 
 # SECOND EXERCISE
-differentAttachments = []
-countDifferentAttachments = 0
-""" class TreeNode:
-    def __init__(self, value):
-        self.joltage1 = None
-        self.joltage2 = None
-        self.joltage3 = None
-        self.value = value
-    
-    def PrintTree(self):
-        print(self.value)
-        if self.joltage1:
-            self.joltage1.PrintTree()
-        if self.joltage2:
-            self.joltage2.PrintTree()
-        if self.joltage3:
-            self.joltage3.PrintTree()
+memoization = {}
 
-parentNode = TreeNode(0) """
-def createDifferentAttachments(curJoltage, curAttachment):
+def getCountDifferentArrangements(curJoltage=_DEFAULT_OUTPUT_JOLTAGE_ADAPTER, curAttachment=[0]):
 
-    global differentAttachments
-    global countDifferentAttachments
-
+    global memoization
     if curJoltage == _RATE_JOLTAGE_BUILTIN_ADAPTER:
-        #print(curAttachment)
-        #differentAttachments.append(curAttachment)
-        countDifferentAttachments += 1
-        return
+        return 1
 
+    if curJoltage in memoization:
+        return memoization[curJoltage]
+
+    attachments = 0
     if (curJoltage + 1) in rateOutputJoltageAdapters:
-        #newAttachment1 = deepcopy(curAttachment)
-        #newAttachment1.append(curJoltage + 1)
-        #createDifferentAttachments(newAttachment1[len(newAttachment1) - 1],newAttachment1)
-        createDifferentAttachments((curJoltage + 1),curAttachment)
+        attachments += getCountDifferentArrangements((curJoltage + 1),curAttachment + [(curJoltage + 1)])
         
     if (curJoltage + 2) in rateOutputJoltageAdapters:
-        #newAttachment2 = deepcopy(curAttachment)
-        #newAttachment2.append(curJoltage + 2)
-        #createDifferentAttachments(newAttachment2[len(newAttachment2) - 1],newAttachment2)
-        createDifferentAttachments((curJoltage + 2),curAttachment)
+        attachments += getCountDifferentArrangements((curJoltage + 2),curAttachment + [(curJoltage + 2)])
         
     if (curJoltage + 3) in rateOutputJoltageAdapters:
-        #newAttachment3 = deepcopy(curAttachment)
-        #newAttachment3.append(curJoltage + 3)
-        #createDifferentAttachments(newAttachment3[len(newAttachment3) - 1],newAttachment3)
-        createDifferentAttachments((curJoltage + 3),curAttachment)
+        attachments += getCountDifferentArrangements((curJoltage + 3),curAttachment + [(curJoltage + 3)])
 
-    return
+    memoization[curJoltage] = attachments
 
-
-
-def getCountDifferentArrangements():
-    global countDifferentAttachments
-    createDifferentAttachments(_DEFAULT_OUTPUT_JOLTAGE_ADAPTER, [0])
-    #return len(differentAttachments)
-    return countDifferentAttachments
+    return attachments
 
 
 def readJoltages():
@@ -107,19 +71,17 @@ def readJoltages():
         value = int(strLine)
 
         rateOutputJoltageAdapters.append(value)
-        _NUM_RATES_CHARGERS += 1
     
     # Device biltin adapter rate equals to higher rate of chargers + 3
     rateOutputJoltageAdapters.sort()
-    _RATE_JOLTAGE_BUILTIN_ADAPTER = rateOutputJoltageAdapters[_NUM_RATES_CHARGERS - 1] + 3
+    _RATE_JOLTAGE_BUILTIN_ADAPTER = rateOutputJoltageAdapters[len(rateOutputJoltageAdapters) - 1] + 3
     rateOutputJoltageAdapters.append(_RATE_JOLTAGE_BUILTIN_ADAPTER)
-    _NUM_RATES_CHARGERS += 1
+    _NUM_RATES_CHARGERS = len(rateOutputJoltageAdapters)
 
 
 readJoltages()
 print("Number of joltages: {0}".format(_NUM_RATES_CHARGERS))
 print("Joltage Builtint adapter: {0}".format(_RATE_JOLTAGE_BUILTIN_ADAPTER))
-sys.setrecursionlimit(10000)
 if (len(sys.argv) == 2 and sys.argv[1] == '1') or len(sys.argv) == 1:
     # First Exercise
     print('First Exercise')

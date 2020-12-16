@@ -11,7 +11,7 @@ seatsMatrix = []
 
 # SECOND EXERCISE
 def findIterativeSeatMove(row, column, move):
-
+    
     if move[0] + column in range(0, _NUM_SEAT_ROWS) and move[1] + row in range(0, _NUM_SEAT_COLUMNS):
         if seatsMatrix[row + move[1]][column + move[0]] == '#':
             return True

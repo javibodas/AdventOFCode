@@ -18,11 +18,11 @@ def findTimesDepthIncrease():
 	return counterIncreased
 
 
-# Exercise 1
+# Exercise 2
 def sumGroupOfThreeDepthsFromPos(pos):
     return sum(depths[pos - 2:pos + 1])
 
-def findTimesDepthIncreaseWithThreeDepths():
+def findTimesDepthIncreaseGroupByThreeDepths():
     counterIncreased = 0
     posToCheck = _NUM_DEPTHS - 1
     
@@ -36,7 +36,7 @@ def findTimesDepthIncreaseWithThreeDepths():
     
 
 
-def readPortOutput():
+def readFile():
     global _NUM_DEPTHS
     global depths
 	
@@ -55,7 +55,7 @@ def readPortOutput():
         _NUM_DEPTHS += 1
 
 
-readPortOutput()
+readFile()
 print("Number of depths: {0}".format(_NUM_DEPTHS))
 if (len(sys.argv) == 2 and sys.argv[1] == '1') or len(sys.argv) == 1:
     # First Exercise
@@ -68,5 +68,5 @@ if (len(sys.argv) == 2 and sys.argv[1] == '2') or len(sys.argv) == 1:
     # Second Exercise
     print('Second Exercise')
     start_time = time.time()
-    result2 = findTimesDepthIncreaseWithThreeDepths()
+    result2 = findTimesDepthIncreaseGroupByThreeDepths()
     print("\t - Result: {0}. Time: {1}s".format(result2, time.time() - start_time))

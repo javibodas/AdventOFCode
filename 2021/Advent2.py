@@ -71,7 +71,7 @@ def readFile():
 
 
 readFile()
-print("Number of depths: {0}".format(_NUM_COMMANDS))
+print("Number of commands: {0}".format(_NUM_COMMANDS))
 if (len(sys.argv) == 2 and sys.argv[1] == '1') or len(sys.argv) == 1:
     # First Exercise
     print('First Exercise')

@@ -3,7 +3,7 @@ import time
 
 # The positions of the shapes are in order from lose to win
 # A (Rock) lose with B (Paper), B (Paper) lose with C (Scissors)
-# Winner is in (currenPos + 1) % 3
+# Winner is in (currenPos + 1) % 3, Loser is in (currentPos + size - 1) % 3
 _OPPONENT_SHAPES = ['A', 'B', 'C'] # Rock, Paper, Scissors
 _ME_SHAPES = ['X', 'Y', 'Z'] # Rock, Paper, Scissors
 _OPPONENT = 0
